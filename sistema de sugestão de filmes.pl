@@ -1,8 +1,34 @@
-% Base de dados definida por: Nota(P�blico e Cr�tica),premia��es,dura��o,g�nero,diretor,pa�s de origem,data de lan�amento,em alta,bilheteria
+:- encoding(utf8).
 
-% ESTRUTURA DO PREDICADO:
-% filme(Titulo, Ano, NotaPublico_0a10, NotaCritica_0a10, PremiacoesOscars,
-%       DuracaoMinutos, Genero, Diretor, PaisOrigem, DataLancamento, EmAlta, BilheteriaMilhoesUSD).
+% =====================================================================
+% SISTEMA DE RECOMENDAÇÃO DE FILMES
+% Disciplina: Lógica para Ciências da Computação | Linguagem: Prolog
+% Autor(es): <preencher>
+% =====================================================================
+%
+% 1. BASE DE CONHECIMENTO
+%
+% Cada filme é representado por um fato com 12 argumentos:
+%
+%   filme(Titulo, Ano, NotaPublico, NotaCritica, Oscars, DuracaoMin,
+%         Genero, Diretor, Pais, DataLancamento, EmAlta, BilheteriaMilhoesUSD).
+%
+%   Titulo        : átomo entre aspas simples, único na base, sem acentos
+%   Ano           : ano de lançamento (sempre igual ao ano de DataLancamento)
+%   NotaPublico   : nota do público, de 0 a 10
+%   NotaCritica   : nota da crítica, de 0 a 10
+%   Oscars        : quantidade de estatuetas do Oscar ganhas
+%   DuracaoMin    : duração em minutos
+%   Genero        : acao, animacao, aventura, biografia, comedia, drama,
+%                   fantasia, ficcao, romance, suspense ou terror
+%   Diretor       : nome do diretor (ou do primeiro diretor creditado)
+%   Pais          : país de origem da produção
+%   DataLancamento: date(Ano, Mes, Dia)
+%   EmAlta        : true para lançamentos recentes em destaque, senão false
+%   BilheteriaMilhoesUSD: bilheteria mundial aproximada, em milhões de dólares
+%
+% Os fatos estão organizados por ano de lançamento (2000 a 2025).
+% =====================================================================
 
 % Ano 2000
 
@@ -13,7 +39,8 @@ filme('Psicopata Americano', 2000, 7.6, 6.4, 0, 102, suspense, 'Mary Harron', 'E
 filme('O Tigre e o Dragao', 2000, 7.9, 9.4, 4, 120, acao, 'Ang Lee', 'Taiwan', date(2000, 7, 6), false, 213.5).
 filme('Premonicao', 2000, 6.7, 4.8, 0, 98, terror, 'James Wong', 'Estados Unidos', date(2000, 3, 17), false, 112.9).
 filme('E Ai, Meu Irmao, Cade Voce?', 2000, 7.7, 6.9, 0, 106, comedia, 'Joel Coen', 'Estados Unidos', date(2000, 12, 22), false, 45.5).
-filme('A Bruxa de Blair (Sequel)', 2000, 4.0, 1.5, 0, 90, terror, 'Joe Berlinger', 'Estados Unidos', date(2000, 10, 27), false, 47.7).
+filme('A Bruxa de Blair 2: O Livro das Sombras', 2000, 4.0, 1.5, 0, 90, terror, 'Joe Berlinger', 'Estados Unidos', date(2000, 10, 27), false, 47.7).
+filme('A Fuga das Galinhas', 2000, 7.0, 8.8, 0, 84, animacao, 'Peter Lord', 'Reino Unido', date(2000, 6, 23), false, 224.8).
 
 % Ano 2001
 
@@ -69,12 +96,14 @@ filme('Sin City: Cidade do Pecado', 2005, 8.0, 7.4, 0, 124, acao, 'Robert Rodrig
 filme('V de Vinganca', 2005, 8.1, 6.2, 0, 132, ficcao, 'James McTeigue', 'Estados Unidos', date(2005, 12, 11), false, 132.5).
 filme('O Albergue', 2005, 5.9, 5.5, 0, 93, terror, 'Eli Roth', 'Estados Unidos', date(2005, 9, 17), false, 82.3).
 filme('Constantine', 2005, 7.0, 5.0, 0, 121, fantasia, 'Francis Lawrence', 'Estados Unidos', date(2005, 2, 18), false, 230.9).
+filme('A Noiva Cadaver', 2005, 7.4, 8.3, 0, 77, animacao, 'Tim Burton', 'Reino Unido', date(2005, 9, 23), false, 117.2).
+filme('Wallace e Gromit: A Batalha dos Vegetais', 2005, 7.5, 8.7, 1, 85, animacao, 'Nick Park', 'Reino Unido', date(2005, 10, 7), false, 192.6).
 
 % Ano 2006
 
 filme('O Ano em que Meus Pais Sairam de Ferias', 2006, 7.4, 7.7, 0, 104, drama, 'Cao Hamburger', 'Brasil', date(2006, 9, 29), false, 1.8).
 filme('O Labirinto do Fauno', 2006, 8.2, 9.8, 3, 118, fantasia, 'Guillermo del Toro', 'Espanha', date(2006, 10, 11), false, 83.9).
-filme('Os Departados', 2006, 8.5, 8.5, 4, 151, suspense, 'Martin Scorsese', 'Estados Unidos', date(2006, 10, 6), false, 291.5).
+filme('Os Infiltrados', 2006, 8.5, 8.5, 4, 151, suspense, 'Martin Scorsese', 'Estados Unidos', date(2006, 10, 6), false, 291.5).
 filme('O Grande Truque', 2006, 8.5, 6.6, 0, 130, drama, 'Christopher Nolan', 'Estados Unidos', date(2006, 10, 20), false, 109.7).
 filme('Pequena Miss Sunshine', 2006, 7.8, 8.0, 2, 101, comedia, 'Jonathan Dayton', 'Estados Unidos', date(2006, 8, 18), false, 101.1).
 filme('Filhos da Esperanca', 2006, 7.9, 8.4, 0, 109, ficcao, 'Alfonso Cuaron', 'Reino Unido', date(2006, 9, 22), false, 70.5).
@@ -84,7 +113,7 @@ filme('O Massacre da Serra Eletrica: O Inicio', 2006, 6.2, 3.0, 0, 91, terror, '
 % Ano 2007
 
 filme('Tropa de Elite', 2007, 8.0, 7.1, 0, 115, acao, 'Jose Padilha', 'Brasil', date(2007, 10, 5), false, 14.7).
-filme('O Onde os Fracos Nao Tem Vez', 2007, 8.2, 9.2, 4, 122, drama, 'Joel Coen', 'Estados Unidos', date(2007, 11, 21), false, 171.6).
+filme('Onde os Fracos Nao Tem Vez', 2007, 8.2, 9.2, 4, 122, drama, 'Joel Coen', 'Estados Unidos', date(2007, 11, 21), false, 171.6).
 filme('Sangue Negro', 2007, 8.2, 9.3, 2, 158, drama, 'Paul Thomas Anderson', 'Estados Unidos', date(2007, 12, 26), false, 76.2).
 filme('Na Natureza Selvagem', 2007, 8.1, 7.3, 0, 148, biografia, 'Sean Penn', 'Estados Unidos', date(2007, 10, 19), false, 56.8).
 filme('Ratatouille', 2007, 8.1, 9.6, 1, 111, animacao, 'Brad Bird', 'Estados Unidos', date(2007, 6, 29), false, 623.7).
@@ -113,6 +142,8 @@ filme('Distrito 9', 2009, 7.9, 8.1, 0, 112, ficcao, 'Neill Blomkamp', 'Africa do
 filme('Se Beber, Nao Case!', 2009, 7.7, 7.3, 0, 100, comedia, 'Todd Phillips', 'Estados Unidos', date(2009, 6, 5), false, 469.3).
 filme('Arraste-me para o Inferno', 2009, 6.6, 8.3, 0, 99, terror, 'Sam Raimi', 'Estados Unidos', date(2009, 5, 29), false, 90.8).
 filme('Zumbilandia', 2009, 7.6, 7.3, 0, 88, comedia, 'Ruben Fleischer', 'Estados Unidos', date(2009, 10, 2), false, 102.3).
+filme('Coraline e o Mundo Secreto', 2009, 7.7, 8.0, 0, 100, animacao, 'Henry Selick', 'Estados Unidos', date(2009, 2, 6), false, 124.6).
+filme('O Fantastico Sr. Raposo', 2009, 7.9, 8.3, 0, 87, animacao, 'Wes Anderson', 'Estados Unidos', date(2009, 11, 13), false, 46.5).
 
 % Ano 2010
 
@@ -123,7 +154,7 @@ filme('Ilha do Medo', 2010, 8.2, 6.3, 0, 138, suspense, 'Martin Scorsese', 'Esta
 filme('Cisne Negro', 2010, 8.0, 7.9, 1, 108, drama, 'Darren Aronofsky', 'Estados Unidos', date(2010, 12, 17), false, 329.4).
 filme('Toy Story 3', 2010, 8.3, 9.2, 2, 103, animacao, 'Lee Unkrich', 'Estados Unidos', date(2010, 6, 18), false, 1067.0).
 filme('As Melhores Coisas do Mundo', 2010, 7.5, 7.8, 0, 107, drama, 'Lais Bodanzky', 'Brasil', date(2010, 4, 16), false, 1.5).
-filme('Deixa-me Entrar (Remake)', 2010, 7.1, 7.9, 0, 116, terror, 'Matt Reeves', 'Estados Unidos', date(2010, 10, 1), false, 24.1).
+filme('Deixe-me Entrar', 2010, 7.1, 7.9, 0, 116, terror, 'Matt Reeves', 'Estados Unidos', date(2010, 10, 1), false, 24.1).
 
 % Ano 2011
 
@@ -146,6 +177,7 @@ filme('As Aventuras de Pi', 2012, 7.9, 7.9, 4, 127, aventura, 'Ang Lee', 'Estado
 filme('007 - Operacao Skyfall', 2012, 7.8, 8.1, 2, 143, acao, 'Sam Mendes', 'Reino Unido', date(2012, 11, 9), false, 1108.6).
 filme('O Segredo da Cabana', 2012, 7.0, 7.2, 0, 95, terror, 'Drew Goddard', 'Estados Unidos', date(2012, 4, 13), false, 66.5).
 filme('Gonzaga: De Pai pra Filho', 2012, 7.7, 7.3, 0, 130, biografia, 'Breno Silveira', 'Brasil', date(2012, 10, 26), false, 6.8).
+filme('ParaNorman', 2012, 7.0, 7.2, 0, 92, animacao, 'Chris Butler', 'Estados Unidos', date(2012, 8, 17), false, 107.1).
 
 % Ano 2013
 
@@ -168,6 +200,7 @@ filme('Garota Exemplar', 2014, 8.1, 7.9, 0, 149, suspense, 'David Fincher', 'Est
 filme('Guardioes da Galaxia', 2014, 8.0, 7.6, 0, 121, acao, 'James Gunn', 'Estados Unidos', date(2014, 8, 1), false, 773.3).
 filme('Corrente do Mal', 2014, 6.8, 8.3, 0, 100, terror, 'David Robert Mitchell', 'Estados Unidos', date(2014, 3, 27), false, 23.3).
 filme('O Babadook', 2014, 6.8, 8.6, 0, 93, terror, 'Jennifer Kent', 'Australia', date(2014, 5, 22), false, 10.3).
+filme('Os Boxtrolls', 2014, 6.8, 7.0, 0, 96, animacao, 'Anthony Stacchi', 'Estados Unidos', date(2014, 9, 26), false, 108.2).
 
 % Ano 2015
 
@@ -190,6 +223,7 @@ filme('Moonlight: Sob a Luz do Luar', 2016, 7.4, 9.9, 3, 111, drama, 'Barry Jenk
 filme('Zootopia', 2016, 8.0, 7.8, 1, 108, animacao, 'Byron Howard', 'Estados Unidos', date(2016, 3, 4), false, 1025.5).
 filme('Invocacao do Mal 2', 2016, 7.3, 6.5, 0, 134, terror, 'James Wan', 'Estados Unidos', date(2016, 6, 10), false, 322.0).
 filme('Minha Mae E uma Peca 2', 2016, 7.0, 6.2, 0, 92, comedia, 'Cesar Rodrigues', 'Brasil', date(2016, 12, 22), false, 38.0).
+filme('Kubo e as Cordas Magicas', 2016, 7.7, 8.4, 0, 101, animacao, 'Travis Knight', 'Estados Unidos', date(2016, 8, 19), false, 77.5).
 
 % Ano 2017
 
@@ -212,6 +246,7 @@ filme('Green Book: O Guia', 2018, 8.2, 6.9, 3, 130, biografia, 'Peter Farrelly',
 filme('Roma', 2018, 7.7, 9.6, 3, 135, drama, 'Alfonso Cuaron', 'Mexico', date(2018, 11, 21), false, 5.1).
 filme('Hereditario', 2018, 7.3, 8.7, 0, 127, terror, 'Ari Aster', 'Estados Unidos', date(2018, 6, 8), false, 82.8).
 filme('Um Lugar Silencioso', 2018, 7.5, 8.2, 0, 90, terror, 'John Krasinski', 'Estados Unidos', date(2018, 4, 6), false, 340.9).
+filme('Ilha dos Cachorros', 2018, 7.8, 8.2, 0, 101, animacao, 'Wes Anderson', 'Estados Unidos', date(2018, 3, 23), false, 64.2).
 
 % Ano 2019
 
@@ -267,30 +302,151 @@ filme('Pobres Criaturas', 2023, 7.9, 8.8, 4, 141, comedia, 'Yorgos Lanthimos', '
 filme('Assassinos da Lua das Flores', 2023, 7.6, 8.9, 0, 206, biografia, 'Martin Scorsese', 'Estados Unidos', date(2023, 10, 20), false, 157.0).
 filme('Fale Comigo', 2023, 7.1, 7.6, 0, 95, terror, 'Danny Philippou', 'Australia', date(2023, 7, 28), false, 92.2).
 filme('Propriedade', 2023, 6.9, 7.4, 0, 100, suspense, 'Daniel Bandeira', 'Brasil', date(2023, 12, 21), false, 0.2).
+filme('O Sequestro do Voo 375', 2023, 7.2, 7.0, 0, 107, suspense, 'Marcus Baldini', 'Brasil', date(2023, 12, 7), false, 1.1).
 
 % Ano 2024
 
-filme('Ainda Estou Aqui', 2024, 8.4, 8.8, 0, 135, drama, 'Walter Salles', 'Brasil', date(2024, 11, 7), true, 18.5).
+filme('Ainda Estou Aqui', 2024, 8.4, 8.8, 1, 135, drama, 'Walter Salles', 'Brasil', date(2024, 11, 7), true, 18.5).
 filme('Duna: Parte 2', 2024, 8.5, 7.9, 2, 166, ficcao, 'Denis Villeneuve', 'Estados Unidos', date(2024, 3, 1), true, 711.8).
 filme('Divertida Mente 2', 2024, 7.6, 7.3, 0, 96, animacao, 'Kelsey Mann', 'Estados Unidos', date(2024, 6, 14), true, 1698.8).
 filme('Gladiador 2', 2024, 6.7, 6.4, 0, 148, acao, 'Ridley Scott', 'Estados Unidos', date(2024, 11, 22), true, 462.0).
 filme('Furiosa: Uma Saga Mad Max', 2024, 7.5, 7.9, 0, 148, acao, 'George Miller', 'Australia', date(2024, 5, 24), true, 172.8).
 filme('Deadpool & Wolverine', 2024, 7.7, 5.6, 0, 128, acao, 'Shawn Levy', 'Estados Unidos', date(2024, 7, 26), true, 1337.8).
-filme('O Sequestro do Voo 375', 2024, 7.2, 7.0, 0, 107, suspense, 'Marcus Baldini', 'Brasil', date(2023, 12, 7), false, 1.1).
 filme('Terrifier 3', 2024, 6.8, 6.0, 0, 125, terror, 'Damien Leone', 'Estados Unidos', date(2024, 10, 11), true, 88.5).
+filme('O Auto da Compadecida 2', 2024, 7.8, 7.5, 0, 110, comedia, 'Guel Arraes', 'Brasil', date(2024, 12, 25), true, 12.0).
 
 % Ano 2025
 
-filme('O Auto da Compadecida 2', 2025, 7.8, 7.5, 0, 110, comedia, 'Guel Arraes', 'Brasil', date(2024, 12, 25), true, 12.0).
 filme('Superman', 2025, 7.5, 7.5, 0, 140, acao, 'James Gunn', 'Estados Unidos', date(2025, 7, 11), true, 650.0).
 filme('Avatar: Fogo e Cinzas', 2025, 7.8, 7.2, 0, 190, ficcao, 'James Cameron', 'Estados Unidos', date(2025, 12, 19), true, 1500.0).
 filme('Mickey 17', 2025, 7.3, 7.4, 0, 139, ficcao, 'Bong Joon Ho', 'Estados Unidos', date(2025, 4, 18), true, 280.0).
 filme('F1', 2025, 7.6, 7.8, 0, 135, drama, 'Joseph Kosinski', 'Estados Unidos', date(2025, 6, 27), true, 410.0).
 filme('Como Treinar o Seu Dragao', 2025, 7.4, 7.1, 0, 125, fantasia, 'Dean DeBlois', 'Estados Unidos', date(2025, 6, 13), true, 520.0).
 filme('Invocacao do Mal 4: Os Ultimos Ritos', 2025, 7.0, 6.8, 0, 115, terror, 'Michael Chaves', 'Estados Unidos', date(2025, 9, 5), true, 230.0).
-filme('Vania', 2025, 7.2, 7.6, 0, 105, drama, 'Charlyne Yi', 'Brasil', date(2025, 3, 20), true, 0.9).
+
+% =====================================================================
+% 2. PREDICADOS AUXILIARES
+% =====================================================================
+% Pegam um campo do fato filme/12, para as regras ficarem curtas e legíveis.
+
+ano(T, A)          :- filme(T, A, _, _, _, _, _, _, _, _, _, _).
+nota_publico(T, N) :- filme(T, _, N, _, _, _, _, _, _, _, _, _).
+nota_critica(T, N) :- filme(T, _, _, N, _, _, _, _, _, _, _, _).
+oscars(T, Q)       :- filme(T, _, _, _, Q, _, _, _, _, _, _, _).
+duracao(T, D)      :- filme(T, _, _, _, _, D, _, _, _, _, _, _).
+genero(T, G)       :- filme(T, _, _, _, _, _, G, _, _, _, _, _).
+diretor(T, D)      :- filme(T, _, _, _, _, _, _, D, _, _, _, _).
+pais(T, P)         :- filme(T, _, _, _, _, _, _, _, P, _, _, _).
+em_alta(T)         :- filme(T, _, _, _, _, _, _, _, _, _, true, _).
+bilheteria(T, B)   :- filme(T, _, _, _, _, _, _, _, _, _, _, B).
 
 
+% =====================================================================
+% 3. REGRAS LÓGICAS
+% =====================================================================
+
+% REGRA 1 - nota_media(?Titulo, ?Media)
+% A média entre a nota do público e a da crítica.
+nota_media(T, Media) :-
+    nota_publico(T, P),
+    nota_critica(T, C),
+    Media is round((P + C) * 50) / 100.0.
+
+% REGRA 2 - bem_avaliado(?Titulo)
+% Filme com nota média maior ou igual a 8.
+bem_avaliado(T) :-
+    nota_media(T, M),
+    M >= 8.0.
+
+% REGRA 3 - premiado(?Titulo)
+% Filme que ganhou pelo menos um Oscar.
+premiado(T) :-
+    oscars(T, Q),
+    Q >= 1.
+
+% REGRA 4 - blockbuster(?Titulo)
+% Filme com bilheteria de pelo menos 500 milhões de dólares.
+blockbuster(T) :-
+    bilheteria(T, B),
+    B >= 500.
+
+% REGRA 5 - nacional(?Titulo)
+% Filme de produção brasileira.
+nacional(T) :-
+    pais(T, 'Brasil').
+
+% REGRA 6 - filme_longo(?Titulo)
+% Filme com duração de 150 minutos ou mais.
+filme_longo(T) :-
+    duracao(T, D),
+    D >= 150.
+
+% REGRA 7 - recomendar(?Genero, ?Titulo)
+% Recomenda os filmes bem avaliados de um gênero.
+recomendar(G, T) :-
+    genero(T, G),
+    bem_avaliado(T).
 
 
+% =====================================================================
+% 4. PREDICADOS DE CONSULTA
+% =====================================================================
 
+% filmes_do_genero(+Genero, -Lista)
+% Lista todos os filmes de um gênero.
+filmes_do_genero(G, Lista) :-
+    setof(T, genero(T, G), Lista).
+
+% filmes_do_diretor(+Diretor, -Lista)
+% Lista todos os filmes de um diretor.
+filmes_do_diretor(D, Lista) :-
+    setof(T, diretor(T, D), Lista).
+
+% filmes_do_ano(+Ano, -Lista)
+% Lista todos os filmes lançados em um ano.
+filmes_do_ano(A, Lista) :-
+    setof(T, ano(T, A), Lista).
+
+% filmes_em_alta(-Lista)
+% Lista os lançamentos que estão em alta.
+filmes_em_alta(Lista) :-
+    setof(T, em_alta(T), Lista).
+
+
+% =====================================================================
+% 5. EXEMPLOS DE CONSULTAS
+% =====================================================================
+
+% CONSULTA 1 - Qual a nota média de Cidade de Deus?
+% ?- nota_media('Cidade de Deus', M).
+% M = 8.25.
+
+% CONSULTA 2 - Parasita é um filme bem avaliado?
+% ?- bem_avaliado('Parasita').
+% true.
+
+% CONSULTA 3 - Quais filmes brasileiros ganharam Oscar?
+% ?- nacional(T), premiado(T).
+% T = 'Ainda Estou Aqui'.
+
+% CONSULTA 4 - Quais filmes de romance você recomenda?
+% ?- recomendar(romance, T).
+% T = 'Brilho Eterno de uma Mente sem Lembrancas' ;
+% T = 'Orgulho e Preconceito' ;
+% T = 'Ela'.
+
+% CONSULTA 5 - Quais filmes foram dirigidos por Christopher Nolan?
+% ?- filmes_do_diretor('Christopher Nolan', Lista).
+% Lista = ['A Origem', 'Batman Begins', 'Batman: O Cavaleiro das Trevas',
+%          'Dunkirk', 'Interestelar', 'O Cavaleiro das Trevas Ressurge',
+%          'O Grande Truque', 'Oppenheimer', 'Tenet'].
+
+% CONSULTA 6 - Quais filmes foram lançados em 2019?
+% ?- filmes_do_ano(2019, Lista).
+% Lista = ['A Vida Invisivel', 'Bacurau', 'Coringa',
+%          'Era Uma Vez em... Hollywood', 'Midsommar: O Mal Nao Espera o Verao',
+%          'Nos', 'Parasita', 'Vingadores: Ultimato'].
+
+% CONSULTA 7 - Avatar é um blockbuster e também um filme longo?
+% ?- blockbuster('Avatar'), filme_longo('Avatar').
+% true.
